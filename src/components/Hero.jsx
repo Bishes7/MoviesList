@@ -8,6 +8,8 @@ const Hero = () => {
   const [bgImg, setBgImg] = useState("");
   const shouldFetchRef = useRef(true);
 
+  const [searching, setSearching] = useState(false);
+
   const searchRef = useRef("");
 
   useEffect(() => {
@@ -21,6 +23,7 @@ const Hero = () => {
     const movie = await fetchFromAPI(str);
     setSearchedMovie(movie);
     setBgImg(movie.Poster);
+    setSearching(false);
   };
 
   const handleMovieSearch = () => {
@@ -28,6 +31,12 @@ const Hero = () => {
     fetchMovie(str);
     searchRef.current.value = "";
   };
+
+  const handleOnDelete = () => {
+    setSearchedMovie({});
+    setSearching(true);
+  };
+
   const moviestyle = {
     backgroundImage: `url(${bgImg})`,
     backgroundRepeat: "no-repeat",
@@ -45,33 +54,42 @@ const Hero = () => {
         style={moviestyle}
       >
         <div className="hero-content">
-          <div className="form-center">
-            <div className="text-center text-white">
-              <h1>Search Millions of Movies</h1>
-              <p>Find about the movies before watching.. </p>
+          <div className={searching ? "form-center" : "form-top"}>
+            {searching && (
+              <div className="text-center text-white">
+                <h1>Search Millions of Movies</h1>
+                <p>Find about the movies before watching.. </p>
+              </div>
+            )}
+
+            <div className="input-group my-5">
+              <input
+                onFocus={() => setSearching(true)}
+                ref={searchRef}
+                type="text"
+                className="form-control"
+                placeholder="Search for MOVIES"
+                aria-label="Search for MOVIES"
+                aria-describedby="button-addon2"
+              />
+              <button
+                className="btn btn-danger"
+                type="button"
+                id="button-addon2"
+                onClick={handleMovieSearch}
+              >
+                Search
+              </button>
             </div>
           </div>
-          <div className="input-group my-5">
-            <input
-              ref={searchRef}
-              type="text"
-              className="form-control"
-              placeholder="Search for MOVIES"
-              aria-label="Search for MOVIES"
-              aria-describedby="button-addon2"
-            />
-            <button
-              className="btn btn-danger"
-              type="button"
-              id="button-addon2"
-              onClick={handleMovieSearch}
+          {!searching && (
+            <div
+              className="movie-card-display showMovie"
+              style={{ marginTop: "10rem" }}
             >
-              Search
-            </button>
-          </div>
-          <div className="movie-card-display">
-            <Card searchedMovie={searchedMovie} />
-          </div>
+              <Card searchedMovie={searchedMovie} deleteFunc={handleOnDelete} />
+            </div>
+          )}
         </div>
       </div>
     </div>

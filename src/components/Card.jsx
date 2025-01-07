@@ -1,6 +1,6 @@
 import React from "react";
 
-const Card = ({ searchedMovie }) => {
+const Card = ({ searchedMovie, deleteFunc }) => {
   const { Poster, Title, imdbRating, Plot } = searchedMovie;
 
   return (
@@ -18,7 +18,9 @@ const Card = ({ searchedMovie }) => {
             <button className="btn btn-info">Action</button>
           </div>
           <div className="d-grid my-3 ">
-            <button className="btn btn-danger">Delete</button>
+            <button onClick={deleteFunc} className="btn btn-danger">
+              Delete
+            </button>
           </div>
         </div>
       </div>
