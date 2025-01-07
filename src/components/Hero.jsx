@@ -1,9 +1,35 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Card from "./Card";
+import { fetchFromAPI } from "../utils/axios";
+import { randomChar } from "../utils/Random";
 
 const Hero = () => {
+  const [searchedMovie, setSearchedMovie] = useState({});
+  const [bgImg, setBgImg] = useState("");
+  const shouldFetchRef = useRef(true);
+
+  const searchRef = useRef("");
+
+  useEffect(() => {
+    if (shouldFetchRef.current) {
+      fetchMovie(randomChar());
+      shouldFetchRef.current = false;
+    }
+  }, []);
+
+  const fetchMovie = async (str) => {
+    const movie = await fetchFromAPI(str);
+    setSearchedMovie(movie);
+    setBgImg(movie.Poster);
+  };
+
+  const handleMovieSearch = () => {
+    const str = searchRef.current.value;
+    fetchMovie(str);
+    searchRef.current.value = "";
+  };
   const moviestyle = {
-    backgroundImage: `url(https://www.omdbapi.com/src/poster.jpg)`,
+    backgroundImage: `url(${bgImg})`,
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
     backgroundSize: "cover",
@@ -11,7 +37,7 @@ const Hero = () => {
   };
   return (
     <div>
-      <nav className="bg-dark py-2 text-warning fixed-top">
+      <nav className="bg-dark py-2 text-warning fixed-top ">
         <h2 className="container">Movie World</h2>
       </nav>
       <div
@@ -27,23 +53,28 @@ const Hero = () => {
           </div>
           <div className="input-group my-5">
             <input
+              ref={searchRef}
               type="text"
               className="form-control"
-              placeholder="Recipient's username"
-              aria-label="Recipient's username"
+              placeholder="Search for MOVIES"
+              aria-label="Search for MOVIES"
               aria-describedby="button-addon2"
             />
-            <button className="btn btn-danger" type="button" id="button-addon2">
+            <button
+              className="btn btn-danger"
+              type="button"
+              id="button-addon2"
+              onClick={handleMovieSearch}
+            >
               Search
             </button>
           </div>
           <div className="movie-card-display">
-            <Card />
+            <Card searchedMovie={searchedMovie} />
           </div>
         </div>
       </div>
     </div>
   );
 };
-
 export default Hero;

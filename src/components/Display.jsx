@@ -23,9 +23,7 @@ const Display = () => {
         </div>
 
         <div className="row mt-4">
-          <div className="col ">
-            <Card />
-          </div>
+          <div className="col ">{/* <Card /> */}</div>
         </div>
       </div>
     </div>
