@@ -3,7 +3,7 @@ import Card from "./Card";
 import { fetchFromAPI } from "../utils/axios";
 import { randomChar } from "../utils/Random";
 
-const Hero = () => {
+const Hero = ({ addMoviesToList }) => {
   const [searchedMovie, setSearchedMovie] = useState({});
   const [bgImg, setBgImg] = useState("");
   const shouldFetchRef = useRef(true);
@@ -33,6 +33,12 @@ const Hero = () => {
   };
 
   const handleOnDelete = () => {
+    setSearchedMovie({});
+    setSearching(true);
+  };
+
+  const handleOnAddToList = (mood) => {
+    addMoviesToList({ ...searchedMovie, mood });
     setSearchedMovie({});
     setSearching(true);
   };
@@ -87,7 +93,11 @@ const Hero = () => {
               className="movie-card-display showMovie"
               style={{ marginTop: "10rem" }}
             >
-              <Card searchedMovie={searchedMovie} deleteFunc={handleOnDelete} />
+              <Card
+                searchedMovie={searchedMovie}
+                deleteFunc={handleOnDelete}
+                handleOnAddToList={handleOnAddToList}
+              />
             </div>
           )}
         </div>
