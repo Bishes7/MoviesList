@@ -1,7 +1,7 @@
 import React from "react";
 
 const Card = ({ searchedMovie, deleteFunc, handleOnAddToList }) => {
-  const { Poster, Title, imdbRating, Plot, mood } = searchedMovie;
+  const { Poster, Title, imdbRating, Plot, mood, imdbID } = searchedMovie;
 
   return (
     <div className="container movie-card-item">
@@ -33,7 +33,10 @@ const Card = ({ searchedMovie, deleteFunc, handleOnAddToList }) => {
           )}
 
           <div className="d-grid my-3 ">
-            <button onClick={deleteFunc} className="btn btn-danger">
+            <button
+              onClick={() => deleteFunc(imdbID)}
+              className="btn btn-danger"
+            >
               Delete
             </button>
           </div>

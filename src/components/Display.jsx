@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
 
-const Display = ({ movieList }) => {
+const Display = ({ movieList, handleOnDel }) => {
   const [displayList, setDisplayList] = useState([]);
 
   useEffect(() => {
@@ -16,6 +16,7 @@ const Display = ({ movieList }) => {
     const filteredMovie = movieList.filter((movie) => movie.mood === mood);
     setDisplayList(filteredMovie);
   };
+
   return (
     <div className="container mt-5">
       <div className="bg-dark p-3">
@@ -53,7 +54,7 @@ const Display = ({ movieList }) => {
         <div className="row mt-4">
           <div className="col-md ">
             {displayList.map((item, i) => (
-              <Card searchedMovie={item} key={i} />
+              <Card searchedMovie={item} key={i} deleteFunc={handleOnDel} />
             ))}
           </div>
         </div>
